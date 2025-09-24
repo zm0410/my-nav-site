@@ -8,7 +8,7 @@
     /* 页面基础样式 */
     body {
       font-family: 'Arial', sans-serif;
-      background: #f8f9fa;
+      background: #f4f7fb;
       margin: 0;
       padding: 0;
       color: #333;
@@ -16,74 +16,80 @@
 
     /* 顶部 */
     header {
-      background: #007bff;
+      background: #4e73df;
       color: white;
       text-align: center;
-      padding: 1.5rem;
+      padding: 2rem 1rem;
+      border-bottom: 3px solid #2e59d9;
     }
     header h1 {
       margin: 0;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
+      font-weight: bold;
     }
     header p {
       margin: 0.5rem 0;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
     header input {
       padding: 0.75rem;
       margin-top: 1rem;
       width: 80%;
       max-width: 400px;
-      border-radius: 4px;
+      border-radius: 8px;
       border: 1px solid #ddd;
       font-size: 1rem;
+      background-color: #f9f9f9;
     }
 
     /* 资源管理器样式 */
     .file-explorer {
-      padding: 2rem;
+      padding: 1rem 2rem;
     }
-
     .folder {
       margin-left: 1rem;
       cursor: pointer;
-      padding: 0.75rem;
+      padding: 1rem;
       background: #fff;
-      border-radius: 4px;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
       font-weight: bold;
-      color: #007bff;
+      color: #4e73df;
       display: flex;
       align-items: center;
-      border: 1px solid #ddd;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
     .folder:hover {
-      background: #f1f3f5;
+      background: #f1f3f7;
     }
     .folder:before {
       content: '📁';
       margin-right: 10px;
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     }
 
     /* 文件 (导航链接) */
     .files {
-      margin-left: 1.5rem;
+      margin-left: 1rem;
       display: none; /* 默认折叠 */
+      padding-left: 1rem;
+      padding-top: 10px;
     }
     .file {
       padding: 0.75rem;
       background: #fff;
-      border-radius: 4px;
-      margin-bottom: 8px;
-      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
-      transition: background-color 0.3s;
+      transition: background 0.2s ease, transform 0.2s ease;
       cursor: pointer;
     }
     .file:hover {
-      background: #f1f3f5;
+      background: #f1f3f7;
+      transform: translateX(5px);
     }
     .file:before {
       content: '📄';
@@ -93,18 +99,26 @@
     .file a {
       text-decoration: none;
       color: #333;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    .file a:hover {
+      color: #4e73df;
     }
 
     /* 页脚 */
     footer {
-      background: #007bff;
+      background: #4e73df;
       color: white;
       text-align: center;
       padding: 1rem;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
     }
 
     footer a {
-      color: #f1f3f5;
+      color: #70a1ff;
       text-decoration: none;
     }
     footer a:hover {
