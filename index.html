@@ -8,7 +8,7 @@
     /* 页面基础样式 */
     body {
       font-family: 'Arial', sans-serif;
-      background: #f4f7fb; /* 背景色保持浅灰 */
+      background: #f4f7fb;
       margin: 0;
       padding: 0;
       color: #333;
@@ -16,11 +16,11 @@
 
     /* 顶部 */
     header {
-      background: #343a40; /* 改为深灰色 */
+      background: #343a40; /* 深灰色 */
       color: white;
       text-align: center;
       padding: 2rem 1rem;
-      border-bottom: 3px solid #23272b; /* 深色边框 */
+      border-bottom: 3px solid #23272b;
     }
     header h1 {
       margin: 0;
@@ -54,7 +54,7 @@
       border-radius: 8px;
       margin-bottom: 15px;
       font-weight: bold;
-      color: #343a40; /* 深灰色 */
+      color: #343a40;
       display: flex;
       align-items: center;
       transition: background 0.3s ease;
@@ -72,7 +72,7 @@
     /* 文件 (导航链接) */
     .files {
       margin-left: 1rem;
-      display: none; /* 默认折叠 */
+      display: none;
       padding-left: 1rem;
       padding-top: 10px;
     }
@@ -103,12 +103,12 @@
       transition: color 0.3s ease;
     }
     .file a:hover {
-      color: #5a6268; /* 更深的灰色 */
+      color: #5a6268;
     }
 
     /* 页脚 */
     footer {
-      background: #343a40; /* 深灰色 */
+      background: #343a40;
       color: white;
       text-align: center;
       padding: 1rem;
@@ -118,7 +118,7 @@
     }
 
     footer a {
-      color: #6c757d; /* 浅灰色 */
+      color: #6c757d;
       text-decoration: none;
     }
     footer a:hover {
@@ -151,34 +151,44 @@
       .then(data => {
         const container = document.getElementById("nav-content");
 
-        for (let category in data) {
-          const categoryContainer = document.createElement("div");
+        // 递归渲染文件夹和文件
+        function renderFolder(folderData, parentContainer) {
+          folderData.forEach(item => {
+            const folder = document.createElement("div");
+            folder.className = "folder";
+            folder.textContent = item.name;
 
-          // 文件夹（分类）
-          const folder = document.createElement("div");
-          folder.className = "folder";
-          folder.textContent = category;
+            const filesContainer = document.createElement("div");
+            filesContainer.className = "files";
 
-          // 文件（导航内容）
-          const filesContainer = document.createElement("div");
-          filesContainer.className = "files";
-          data[category].forEach(link => {
-            const file = document.createElement("div");
-            file.className = "file";
-            file.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
-            filesContainer.appendChild(file);
+            // 如果有子文件夹，递归渲染
+            if (item.children) {
+              renderFolder(item.children, filesContainer);
+            }
+
+            // 添加文件链接
+            if (item.links) {
+              item.links.forEach(link => {
+                const file = document.createElement("div");
+                file.className = "file";
+                file.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
+                filesContainer.appendChild(file);
+              });
+            }
+
+            // 展开/折叠文件夹
+            folder.addEventListener("click", () => {
+              const isVisible = filesContainer.style.display === "block";
+              filesContainer.style.display = isVisible ? "none" : "block";
+            });
+
+            parentContainer.appendChild(folder);
+            parentContainer.appendChild(filesContainer);
           });
-
-          // 点击文件夹展开或折叠文件内容
-          folder.addEventListener("click", () => {
-            const isVisible = filesContainer.style.display === "block";
-            filesContainer.style.display = isVisible ? "none" : "block";
-          });
-
-          categoryContainer.appendChild(folder);
-          categoryContainer.appendChild(filesContainer);
-          container.appendChild(categoryContainer);
         }
+
+        // 开始渲染根目录
+        renderFolder(data, container);
       });
 
     // 搜索功能

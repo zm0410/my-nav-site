@@ -1,26 +1,32 @@
-{
-  "学习资源": [
-    {
-      "title": "GitHub",
-      "url": "https://github.com",
-      "description": "全球最大开发者社区"
-    },
-    {
-      "title": "菜鸟教程",
-      "url": "https://www.runoob.com",
-      "description": "编程学习网站"
-    }
-  ],
-  "工具网站": [
-    {
-      "title": "阿虚同学",
-      "url": "https://axutongxue.com",
-      "description": "资源导航站"
-    },
-    {
-      "title": "Google",
-      "url": "https://www.google.com",
-      "description": "全球搜索引擎"
-    }
-  ]
-}
+[
+  {
+    "name": "编程语言",
+    "children": [
+      {
+        "name": "Python",
+        "links": [
+          {"title": "Python 官方文档", "url": "https://docs.python.org/3/"},
+          {"title": "Python 教程", "url": "https://www.runoob.com/python3/python3-tutorial.html"}
+        ]
+      },
+      {
+        "name": "JavaScript",
+        "links": [
+          {"title": "MDN JavaScript", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript"}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "工具",
+    "children": [
+      {
+        "name": "Git",
+        "links": [
+          {"title": "Git 官方文档", "url": "https://git-scm.com/doc"},
+          {"title": "Git 教程", "url": "https://www.runoob.com/git/git-tutorial.html"}
+        ]
+      }
+    ]
+  }
+]
