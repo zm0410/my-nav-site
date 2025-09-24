@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的储物间</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f6fa;
+      color: #333;
+    }
+    header {
+      background: #2f3542;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    header h1 { margin: 0; font-size: 2rem; }
+    header p { margin: 0.5rem 0; }
+    header input {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      width: 60%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: none;
+    }
+    section { padding: 2rem 1rem; }
+    section h2 { margin-bottom: 1rem; color: #2f3542; }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .card {
+      flex: 1 1 200px;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .card h3 { margin-top: 0; font-size: 1.2rem; }
+    .card p { font-size: 0.9rem; color: #666; }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #2f3542;
+      color: #fff;
+    }
+    footer a {
+      color: #70a1ff;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>我的储物间</h1>
+    <p>收集常用资源的网站导航</p>
+    <input type="text" id="search" placeholder="🔍 搜索网站...">
+  </header>
+
+  <!-- 导航内容将由 JS 生成 -->
+  <main id="nav-content"></main>
+
+  <footer>
+    <p>&copy; 2025 我的储物间 | 部署于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
+  </footer>
+
+  <script>
+    // 加载 JSON 并渲染导航
+    fetch("links.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("nav-content");
+        for (let category in data) {
+          let section = document.createElement("section");
+          section.innerHTML = `<h2>${category}</h2><div class="cards"></div>`;
+          let cards = section.querySelector(".cards");
+
+          data[category].forEach(link => {
+            cards.innerHTML += `
+              <a class="card" href="${link.url}" target="_blank">
+                <h3>${link.title}</h3>
+                <p>${link.description}</p>
+              </a>`;
+          });
+
+          container.appendChild(section);
+        }
+      });
+
+    // 搜索功能
+    document.getElementById("search").addEventListener("input", function() {
+      let keyword = this.value.toLowerCase();
+      document.querySelectorAll(".card").forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(keyword) ? "block" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
