@@ -5,19 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的储物间</title>
   <style>
+    /* 页面基础样式 */
     body {
       font-family: Arial, sans-serif;
+      background: #f0f2f5;
       margin: 0;
-      background: #f5f6fa;
+      padding: 0;
       color: #333;
     }
 
     /* 顶部 */
     header {
       background: #2f3542;
-      color: #fff;
+      color: white;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 2rem;
     }
     header h1 {
       margin: 0;
@@ -25,67 +27,72 @@
     }
     header p {
       margin: 0.5rem 0;
+      font-size: 1.2rem;
     }
     header input {
-      margin-top: 1rem;
       padding: 0.5rem;
-      width: 60%;
+      margin-top: 1rem;
+      width: 80%;
       max-width: 400px;
       border-radius: 8px;
       border: none;
+      font-size: 1rem;
     }
 
-    /* 分类 */
-    section {
-      padding: 2rem 1rem;
+    /* 资源管理器样式 */
+    .file-explorer {
+      padding: 1rem 2rem;
     }
-    section h2 {
-      margin-bottom: 1rem;
-      color: #2f3542;
+    .folder {
+      margin-left: 1rem;
       cursor: pointer;
-      font-size: 1.5rem;
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 0.3rem;
-    }
-
-    /* 卡片 */
-    .cards {
+      padding: 0.5rem;
+      background: #f7f8fa;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #2f3542;
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease;
+      align-items: center;
     }
-    .card {
-      flex: 1 1 200px;
+    .folder:hover {
+      background: #e4e8ef;
+    }
+    .folder:before {
+      content: '📁';
+      margin-right: 10px;
+    }
+    .files {
+      margin-left: 1rem;
+      display: none; /* 默认折叠 */
+      padding-left: 1rem;
+    }
+    .file {
+      padding: 0.5rem;
       background: #fff;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-decoration: none;
-      color: #333;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      transition: background 0.2s ease;
+      cursor: pointer;
     }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    .file:hover {
+      background: #f1f3f5;
     }
-    .card h3 {
-      margin-top: 0;
-      font-size: 1.2rem;
-    }
-    .card p {
-      font-size: 0.9rem;
-      color: #666;
+    .file:before {
+      content: '📄';
+      margin-right: 10px;
     }
 
     footer {
+      background: #2f3542;
+      color: white;
       text-align: center;
       padding: 1rem;
-      background: #2f3542;
-      color: #fff;
     }
+
     footer a {
       color: #70a1ff;
       text-decoration: none;
@@ -96,53 +103,65 @@
   </style>
 </head>
 <body>
+
+  <!-- 顶部 -->
   <header>
     <h1>我的储物间</h1>
     <p>收集常用资源的网站导航</p>
     <input type="text" id="search" placeholder="🔍 搜索网站...">
   </header>
 
-  <main id="nav-content"></main>
+  <!-- 资源管理器 -->
+  <div class="file-explorer" id="nav-content"></div>
 
+  <!-- 页脚 -->
   <footer>
     <p>&copy; 2025 我的储物间 | 部署于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
   </footer>
 
   <script>
-    // 动态加载 JSON 内容
+    // 加载 JSON 数据
     fetch("links.json")
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById("nav-content");
-
+        
         for (let category in data) {
-          let section = document.createElement("section");
-          section.innerHTML = `<h2>${category}</h2><div class="cards"></div>`;
-          let cards = section.querySelector(".cards");
-
+          const categoryContainer = document.createElement("div");
+          
+          // 文件夹（分类）
+          const folder = document.createElement("div");
+          folder.className = "folder";
+          folder.textContent = category;
+          
+          // 文件（导航内容）
+          const filesContainer = document.createElement("div");
+          filesContainer.className = "files";
           data[category].forEach(link => {
-            cards.innerHTML += `
-              <a class="card" href="${link.url}" target="_blank">
-                <h3>${link.title}</h3>
-                <p>${link.description}</p>
-              </a>`;
+            const file = document.createElement("div");
+            file.className = "file";
+            file.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
+            filesContainer.appendChild(file);
           });
-
-          // 点击分类标题，展开或折叠卡片内容
-          const categoryTitle = section.querySelector("h2");
-          categoryTitle.addEventListener("click", () => {
-            cards.style.maxHeight = cards.style.maxHeight === "0px" ? `${cards.scrollHeight}px` : "0px";
+          
+          // 点击文件夹展开或折叠文件内容
+          folder.addEventListener("click", () => {
+            const isVisible = filesContainer.style.display === "block";
+            filesContainer.style.display = isVisible ? "none" : "block";
           });
-
-          container.appendChild(section);
+          
+          categoryContainer.appendChild(folder);
+          categoryContainer.appendChild(filesContainer);
+          container.appendChild(categoryContainer);
         }
       });
 
     // 搜索功能
     document.getElementById("search").addEventListener("input", function() {
-      let keyword = this.value.toLowerCase();
-      document.querySelectorAll(".card").forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(keyword) ? "block" : "none";
+      const keyword = this.value.toLowerCase();
+      document.querySelectorAll(".file").forEach(file => {
+        const isMatch = file.textContent.toLowerCase().includes(keyword);
+        file.style.display = isMatch ? "block" : "none";
       });
     });
   </script>
