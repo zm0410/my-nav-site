@@ -7,8 +7,8 @@
   <style>
     /* 页面基础样式 */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f7fb;
+      font-family: 'Arial', sans-serif;
+      background: #f8f9fa;
       margin: 0;
       padding: 0;
       color: #333;
@@ -16,80 +16,74 @@
 
     /* 顶部 */
     header {
-      background: #4e73df;
+      background: #007bff;
       color: white;
       text-align: center;
-      padding: 2rem 1rem;
-      border-bottom: 3px solid #2e59d9;
+      padding: 1.5rem;
     }
     header h1 {
       margin: 0;
-      font-size: 2.5rem;
-      font-weight: bold;
+      font-size: 2.2rem;
     }
     header p {
       margin: 0.5rem 0;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     header input {
       padding: 0.75rem;
       margin-top: 1rem;
       width: 80%;
       max-width: 400px;
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid #ddd;
       font-size: 1rem;
-      background-color: #f9f9f9;
     }
 
     /* 资源管理器样式 */
     .file-explorer {
-      padding: 1rem 2rem;
+      padding: 2rem;
     }
+
     .folder {
       margin-left: 1rem;
       cursor: pointer;
-      padding: 1rem;
+      padding: 0.75rem;
       background: #fff;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      border-radius: 4px;
+      margin-bottom: 12px;
       font-weight: bold;
-      color: #4e73df;
+      color: #007bff;
       display: flex;
       align-items: center;
-      transition: background 0.3s ease;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ddd;
     }
     .folder:hover {
-      background: #f1f3f7;
+      background: #f1f3f5;
     }
     .folder:before {
       content: '📁';
       margin-right: 10px;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
 
     /* 文件 (导航链接) */
     .files {
-      margin-left: 1rem;
+      margin-left: 1.5rem;
       display: none; /* 默认折叠 */
-      padding-left: 1rem;
-      padding-top: 10px;
     }
     .file {
       padding: 0.75rem;
       background: #fff;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      border: 1px solid #ddd;
       display: flex;
       align-items: center;
-      transition: background 0.2s ease, transform 0.2s ease;
+      transition: background-color 0.3s;
       cursor: pointer;
     }
     .file:hover {
-      background: #f1f3f7;
-      transform: translateX(5px);
+      background: #f1f3f5;
     }
     .file:before {
       content: '📄';
@@ -99,26 +93,18 @@
     .file a {
       text-decoration: none;
       color: #333;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-    }
-    .file a:hover {
-      color: #4e73df;
     }
 
     /* 页脚 */
     footer {
-      background: #4e73df;
+      background: #007bff;
       color: white;
       text-align: center;
       padding: 1rem;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
     }
 
     footer a {
-      color: #70a1ff;
+      color: #f1f3f5;
       text-decoration: none;
     }
     footer a:hover {
@@ -153,12 +139,12 @@
 
         for (let category in data) {
           const categoryContainer = document.createElement("div");
-          
+
           // 文件夹（分类）
           const folder = document.createElement("div");
           folder.className = "folder";
           folder.textContent = category;
-          
+
           // 文件（导航内容）
           const filesContainer = document.createElement("div");
           filesContainer.className = "files";
@@ -166,3 +152,30 @@
             const file = document.createElement("div");
             file.className = "file";
             file.innerHTML = `<a href="${link.url}" target="_blank">${link.title}</a>`;
+            filesContainer.appendChild(file);
+          });
+
+          // 点击文件夹展开或折叠文件内容
+          folder.addEventListener("click", () => {
+            const isVisible = filesContainer.style.display === "block";
+            filesContainer.style.display = isVisible ? "none" : "block";
+          });
+
+          categoryContainer.appendChild(folder);
+          categoryContainer.appendChild(filesContainer);
+          container.appendChild(categoryContainer);
+        }
+      });
+
+    // 搜索功能
+    document.getElementById("search").addEventListener("input", function() {
+      const keyword = this.value.toLowerCase();
+      document.querySelectorAll(".file").forEach(file => {
+        const isMatch = file.textContent.toLowerCase().includes(keyword);
+        file.style.display = isMatch ? "block" : "none";
+      });
+    });
+  </script>
+
+</body>
+</html>
