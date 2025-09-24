@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的储物间</title>
   <style>
-    /* 全局样式 */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -22,7 +21,7 @@
     }
     header h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.5rem;
     }
     header p {
       margin: 0.5rem 0;
@@ -49,14 +48,14 @@
       padding-bottom: 0.3rem;
     }
 
-    /* 卡片布局 */
+    /* 卡片 */
     .cards {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
-      max-height: 0; /* 默认折叠 */
+      max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease-out; /* 平滑过渡效果 */
+      transition: max-height 0.5s ease;
     }
     .card {
       flex: 1 1 200px;
@@ -81,7 +80,6 @@
       color: #666;
     }
 
-    /* 页脚 */
     footer {
       text-align: center;
       padding: 1rem;
@@ -98,27 +96,25 @@
   </style>
 </head>
 <body>
-  <!-- 顶部 -->
   <header>
     <h1>我的储物间</h1>
     <p>收集常用资源的网站导航</p>
     <input type="text" id="search" placeholder="🔍 搜索网站...">
   </header>
 
-  <!-- 导航内容 -->
   <main id="nav-content"></main>
 
-  <!-- 页脚 -->
   <footer>
     <p>&copy; 2025 我的储物间 | 部署于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
   </footer>
 
   <script>
-    // 加载 JSON 并渲染导航
+    // 动态加载 JSON 内容
     fetch("links.json")
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById("nav-content");
+
         for (let category in data) {
           let section = document.createElement("section");
           section.innerHTML = `<h2>${category}</h2><div class="cards"></div>`;
@@ -132,7 +128,7 @@
               </a>`;
           });
 
-          // 点击分类标题时展开或折叠卡片内容
+          // 点击分类标题，展开或折叠卡片内容
           const categoryTitle = section.querySelector("h2");
           categoryTitle.addEventListener("click", () => {
             cards.style.maxHeight = cards.style.maxHeight === "0px" ? `${cards.scrollHeight}px` : "0px";
